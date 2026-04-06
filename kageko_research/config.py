@@ -51,4 +51,3 @@ class Configuration(BaseModel):
                 if value is not None:
                     data[key] = value
         return cls(**data)
-

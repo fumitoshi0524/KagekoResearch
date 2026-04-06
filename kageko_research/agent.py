@@ -49,7 +49,9 @@ class DeepResearchAgent:
     def run(self, topic: str) -> DeepResearchResult:
         state = self._init_state(topic)
         self._execute(state)
-        report = self.reporter.generate_report(topic=state.research_topic, tasks=state.todo_items)
+        report = self.reporter.generate_report(
+            topic=state.research_topic, tasks=state.todo_items
+        )
         state.report_markdown = report
         report_path = self.notes.save_final_report(topic=topic, report=report)
         return DeepResearchResult(
@@ -61,11 +63,19 @@ class DeepResearchAgent:
     def run_stream(self, topic: str) -> Iterator[dict]:
         yield {"type": "status", "message": "Planning tasks"}
         state = self._init_state(topic)
-        yield {"type": "todo_list", "tasks": [self._serialize_task(t) for t in state.todo_items]}
+        yield {
+            "type": "todo_list",
+            "tasks": [self._serialize_task(t) for t in state.todo_items],
+        }
 
         for task in state.todo_items:
             task.status = "in_progress"
-            yield {"type": "task_status", "task_id": task.id, "status": task.status, "title": task.title}
+            yield {
+                "type": "task_status",
+                "task_id": task.id,
+                "status": task.status,
+                "title": task.title,
+            }
 
             results, round_queries = search_multi_round(task.query, config=self.config)
             formatted = format_for_prompt(results)
@@ -93,7 +103,11 @@ class DeepResearchAgent:
                     summary=summary,
                 )
 
-            yield {"type": "task_summary_chunk", "task_id": task.id, "content": task.summary}
+            yield {
+                "type": "task_summary_chunk",
+                "task_id": task.id,
+                "content": task.summary,
+            }
             task.status = "completed"
             yield {
                 "type": "task_status",
@@ -103,7 +117,9 @@ class DeepResearchAgent:
                 "note_path": task.note_path,
             }
 
-        report = self.reporter.generate_report(topic=state.research_topic, tasks=state.todo_items)
+        report = self.reporter.generate_report(
+            topic=state.research_topic, tasks=state.todo_items
+        )
         state.report_markdown = report
         report_path = self.notes.save_final_report(topic=topic, report=report)
         yield {"type": "final_report", "report": report, "report_path": report_path}
@@ -158,4 +174,3 @@ class DeepResearchAgent:
             "sources_summary": task.sources_summary,
             "note_path": task.note_path,
         }
-

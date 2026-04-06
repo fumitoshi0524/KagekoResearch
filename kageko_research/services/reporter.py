@@ -35,4 +35,3 @@ class ReportingService:
             ),
         )
         return response.text.strip()
-

@@ -29,4 +29,3 @@ class SummarizationService:
             ),
         )
         return response.text.strip()
-

@@ -69,4 +69,3 @@ class PlanningService:
         except json.JSONDecodeError:
             return None
         return data if isinstance(data, list) else None
-

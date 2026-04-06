@@ -46,8 +46,8 @@ class NotesService:
         lines.extend(
             [
                 "",
-            "## Search Results",
-            "",
+                "## Search Results",
+                "",
             ]
         )
         for i, item in enumerate(search_results, start=1):
@@ -65,4 +65,3 @@ class NotesService:
         path = self.reports_dir / filename
         path.write_text(report.strip() + "\n", encoding="utf-8")
         return str(path)
-

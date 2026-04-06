@@ -57,12 +57,16 @@ class RuntimeFacade:
     def __init__(self, runtime) -> None:
         self._runtime = runtime
 
-    def run(self, mode: str, message: str, session_id: str | None = None, tool_plan=None):
+    def run(
+        self, mode: str, message: str, session_id: str | None = None, tool_plan=None
+    ):
         ensure_framework_on_path()
         from KagekoO_O import AgentMode
 
         mode_value = AgentMode(mode)
-        return self._runtime.run(mode_value, message, session_id=session_id, tool_plan=tool_plan)
+        return self._runtime.run(
+            mode_value, message, session_id=session_id, tool_plan=tool_plan
+        )
 
 
 def create_runtime(
@@ -85,4 +89,3 @@ def create_runtime(
         workspace=str(workspace),
     )
     return RuntimeFacade(runtime)
-

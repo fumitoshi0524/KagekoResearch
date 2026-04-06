@@ -23,4 +23,3 @@ class ResearchState:
     todo_items: list[TodoItem] = field(default_factory=list)
     running_summary: str | None = None
     report_markdown: str | None = None
-

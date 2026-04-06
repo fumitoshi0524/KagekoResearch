@@ -127,7 +127,9 @@ def create_app() -> FastAPI:
             try:
                 search_api = SearchAPI(search_api_raw)
             except ValueError as exc:
-                raise HTTPException(status_code=400, detail="invalid search_api") from exc
+                raise HTTPException(
+                    status_code=400, detail="invalid search_api"
+                ) from exc
 
         payload = ResearchRequest(topic=topic, search_api=search_api)
         return StreamingResponse(
@@ -149,4 +151,3 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run("kageko_research.main:app", host="0.0.0.0", port=8000, reload=True)
-

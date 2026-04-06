@@ -30,7 +30,9 @@ Return JSON only in this format:
 """
 
 
-def summarizer_prompt(*, topic: str, task_title: str, task_intent: str, query: str, search_context: str) -> str:
+def summarizer_prompt(
+    *, topic: str, task_title: str, task_intent: str, query: str, search_context: str
+) -> str:
     return f"""
 You are a task summarization expert.
 Research topic: {topic}
@@ -64,4 +66,3 @@ Generate a Markdown report with:
 4. Summary
 5. References
 """
-

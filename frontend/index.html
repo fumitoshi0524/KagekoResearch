@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kageko Deep Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/app.css">
+</head>
+
+<body>
+    <div class="background-glow"></div>
+
+    <div class="layout-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <div class="brand-logo"></div>
+                <div class="brand-text">
+                    <h1>Kageko Research</h1>
+                    <p>Deep Agentic Workflow</p>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="topicInput">Research Directive</label>
+                <textarea id="topicInput" rows="4"
+                    placeholder="What should I investigate today? e.g. Evaluate the latest advancements in quant trading algorithms."></textarea>
+            </div>
+
+            <div class="presets">
+                <span class="presets-label">SUGGESTIONS</span>
+                <div class="presets-grid">
+                    <button class="chip" data-topic="Deep dive into agentic RAG architectures">Agentic RAG</button>
+                    <button class="chip" data-topic="Comparison of top LLMs for coding tasks">LLM Coding Evals</button>
+                    <button class="chip" data-topic="New developments in quantum computing 2026">Quantum 2026</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="startBtn" class="btn btn-primary">Initialize Research</button>
+                <button id="stopBtn" class="btn btn-secondary" disabled>Halt</button>
+                <button id="clearBtn" class="btn btn-tertiary">Reset</button>
+            </div>
+
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="status-label">State</span>
+                    <span id="statusBadge" class="status-pill idle">Idle</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Time</span>
+                    <span id="elapsedText">00:00</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Tasks</span>
+                    <span id="progressText">0 / 0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Ping</span>
+                    <span id="lastUpdateText">-</span>
+                </div>
+            </div>
+
+            <div id="statusLine" class="status-footer">System ready. Awaiting directive.</div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <div class="top-panels">
+                <!-- Tasks Panel -->
+                <section class="panel glass-panel tasks-panel">
+                    <div class="panel-header">
+                        <h2>Execution Graph</h2>
+                        <span id="taskCountText" class="badge">0 tasks</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="progressFill" class="progress-bar-fill"></div>
+                    </div>
+                    <div id="taskBoard" class="task-board-grid">
+                        <!-- task cards injected here -->
+                    </div>
+                </section>
+
+                <!-- Activity Panel -->
+                <section class="panel glass-panel activity-panel">
+                    <div class="panel-header">
+                        <h2>Telemetry Stream</h2>
+                        <button id="toggleAutoScrollBtn" class="btn-icon active">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 5v14M19 12l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <ul id="activityList" class="activity-list stream-view"></ul>
+                </section>
+            </div>
+
+            <!-- Report Panel -->
+            <section class="panel glass-panel report-panel">
+                <div class="panel-header">
+                    <h2>Synthesized Output</h2>
+                    <div class="header-actions">
+                        <button id="toggleRawBtn" class="btn-icon" title="Toggle Raw Markdown">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                                </path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                        </button>
+                        <button id="copyReportBtn" class="btn-icon" title="Copy to Clipboard">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button id="downloadReportBtn" class="btn-icon" title="Download Report">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="reportMeta" class="report-meta">Output waiting for synthesis...</div>
+
+                <div class="report-content-area">
+                    <article id="reportRendered" class="report-rendered markdown-body empty">
+                        <div class="placeholder-text">The final research report will be compiled here once all tasks are
+                            completed.</div>
+                    </article>
+                    <pre id="reportRaw" class="report-raw hidden"></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/assets/app.js"></script>
+</body>
+
+</html>

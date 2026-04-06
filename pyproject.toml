@@ -1,0 +1,21 @@
+[project]
+name = "kageko-deep-research"
+version = "0.1.0"
+description = "Automated deep research assistant built with KagekoO_O runtime."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "python-dotenv>=1.2.2",
+    "pydantic>=2.12.5",
+    "ddgs",
+    "openai>=1.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=73.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["kageko_research", "kageko_research.services"]
